@@ -7,6 +7,42 @@ form.addEventListener('submit', e => {
     e.preventDefault();
     const apiKey = "5568fa66d2f5e81907d5b2013986c0fe";
     const inputVal = input.value;
+
+    // Prevent Duplicate Requests
+    //1 
+    const listItems = list.querySelectorAll(".ajax-section .city");
+    const listItemsArray = Array.from(listItems);
+    if (listItemsArray.length > 0) {
+        //2 
+        const filteredArray = listItemsArray.filter(el => {
+        let content = "";
+        //athens,gr 
+        if (inputVal.includes(",")) {
+        //athens,grrrrrr->invalid country code, so we keep only the first part of inputVal 
+        if (inputVal.split(",")[1].length > 2) {
+            input.value = inputVal.split(",")[0];
+            content = el.querySelector(".city-name span").textContent.toLowerCase();
+        } // else Valid country
+        else {
+            content = el.querySelector(".city-name").dataset.name.toLowerCase();
+        }
+        } else {
+        //athens 
+        content = el.querySelector(".city-name span").textContent.toLowerCase();
+        }
+        return content == inputVal.toLowerCase();
+        });
+  
+        //3 
+        if (filteredArray.length > 0) {
+        msg.textContent = `You already know the weather for ${
+        filteredArray[0].querySelector(".city-name span").textContent
+        } ...otherwise be more specific by providing the country code as well 😉`;
+        form.reset();
+        input.focus();
+        return list;
+        } 
+    }
     
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
 
