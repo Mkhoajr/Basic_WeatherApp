@@ -5,7 +5,7 @@ const list = document.querySelector(".ajax-section .cities");
 
 form.addEventListener('submit', e => {
     e.preventDefault();
-    const apiKey = "5568fa66d2f5e81907d5b2013986c0fe";
+    const apiKey = "";
     const inputVal = input.value;
     
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
